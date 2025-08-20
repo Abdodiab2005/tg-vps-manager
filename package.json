@@ -18,7 +18,8 @@
   "author": "Eng. Abdelrhman Diab",
   "license": "MIT",
   "dependencies": {
-    "node-telegram-bot-api": "^0.64.0"
+    "node-telegram-bot-api": "^0.64.0",
+    "dotenv": "^17.2.1",
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
