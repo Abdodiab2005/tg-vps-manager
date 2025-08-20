@@ -38,7 +38,7 @@ A powerful Telegram bot for managing your Linux VPS remotely. Execute commands, 
 1. **Clone the repository**
    ```bash
    git clone https://github.com/Abdodiab2005/tg-vps-manager.git
-   cd vps-telegram-bot
+   cd tg-vps-manager
    ```
 
 2. **Install dependencies**
