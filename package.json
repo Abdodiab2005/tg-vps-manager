@@ -1,0 +1,29 @@
+{
+  "name": "vps-telegram-bot",
+  "version": "1.0.0",
+  "description": "Telegram bot for VPS management with system monitoring and command execution",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [
+    "telegram",
+    "bot",
+    "vps",
+    "linux",
+    "monitoring",
+    "system"
+  ],
+  "author": "Eng. Abdelrhman Diab",
+  "license": "MIT",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.64.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
