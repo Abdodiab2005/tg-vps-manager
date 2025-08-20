@@ -46,15 +46,19 @@ A powerful Telegram bot for managing your Linux VPS remotely. Execute commands, 
    npm install
    ```
 
-3. **Configure the bot**
+3. **Make `.env` file:**
+   ```bash
+   nano .env
+   ```
    
+4. **Configure the bot**
    Add these variables to `.env` file:
    ```javascript
     TOKEN=YOUR_BOT_TOKEN_HERE
     AUTHORIZED_CHAT_ID=YOUR_CHAT_ID_HERE
    ```
 
-4. **Run the bot**
+5. **Run the bot**
    ```bash
    npm start
    ```
@@ -139,7 +143,7 @@ The `/status` command provides comprehensive system information:
    Type=simple
    User=your-username
    WorkingDirectory=/path/to/vps-telegram-bot
-   ExecStart=/usr/bin/node bot.js
+   ExecStart=/usr/bin/node index.js
    Restart=always
    RestartSec=10
 
@@ -158,7 +162,7 @@ The `/status` command provides comprehensive system information:
 
 ```bash
 npm install -g pm2
-pm2 start bot.js --name "vps-bot"
+pm2 start index.js --name "vps-bot"
 pm2 startup
 pm2 save
 ```
@@ -194,7 +198,7 @@ pm2 save
 Check bot logs:
 ```bash
 # If running directly
-node bot.js
+node index.js
 
 # If using systemd
 sudo journalctl -u vps-bot -f
@@ -208,7 +212,6 @@ pm2 logs vps-bot
 - `node-telegram-bot-api`: Telegram Bot API wrapper
 - `child_process`: For executing system commands
 - `os`: System information utilities
-- `fs`: File system operations
 
 ## Contributing 🤝
 
