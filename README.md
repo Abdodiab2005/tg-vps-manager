@@ -37,7 +37,7 @@ A powerful Telegram bot for managing your Linux VPS remotely. Execute commands, 
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/vps-telegram-bot.git
+   git clone https://github.com/Abdodiab2005/tg-vps-manager.git
    cd vps-telegram-bot
    ```
 
@@ -48,10 +48,10 @@ A powerful Telegram bot for managing your Linux VPS remotely. Execute commands, 
 
 3. **Configure the bot**
    
-   Edit `bot.js` and update these variables:
+   Add these variables to `.env` file:
    ```javascript
-   const TOKEN = 'YOUR_BOT_TOKEN_HERE';
-   const AUTHORIZED_CHAT_ID = YOUR_CHAT_ID_HERE;
+    TOKEN=YOUR_BOT_TOKEN_HERE
+    AUTHORIZED_CHAT_ID=YOUR_CHAT_ID_HERE
    ```
 
 4. **Run the bot**
@@ -230,7 +230,7 @@ This bot provides unrestricted access to your Linux system. The authors are not 
 
 If you encounter any issues or have questions:
 
-1. Check the [Issues](https://github.com/yourusername/vps-telegram-bot/issues) page
+1. Check the [Issues](https://github.com/Abdodiab2005/tg-vps-manager/issues) page
 2. Create a new issue if your problem isn't already reported
 3. Provide detailed information about your setup and the problem
 
