@@ -4,8 +4,8 @@ const os = require('os');
 const fs = require('fs');
 
 // إعدادات البوت
-const TOKEN = '8288177857:AAHnRKXUJnD2IdOGGJJ3ot_C1konMigItQo';
-const AUTHORIZED_CHAT_ID = 6899264218;
+const TOKEN = process.env.TOKEN;
+const AUTHORIZED_CHAT_ID = process.env.AUTHORIZED_CHAT_ID;
 
 // إنشاء البوت
 const bot = new TelegramBot(TOKEN, { polling: true });
