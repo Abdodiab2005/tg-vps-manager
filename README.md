@@ -81,6 +81,19 @@ A powerful Telegram bot for managing your Linux VPS remotely. Execute commands, 
 1. Message [@userinfobot](https://t.me/userinfobot) on Telegram
 2. Copy your Chat ID from the response
 
+### Add command lists
+- Go to bot father -> type: `/mybots` -> choose your bot -> Edit Bot -> Edit Commands -> Paste this text and send to save
+```txt
+start - Welcome message and command list
+status - Detailed system information and resource usage
+run - Execute any Linux command
+restart - Restart the system
+processes - Show top CPU-consuming processes
+network - Display network interface information
+disk - Show disk usage statistics
+logs - Display recent system logs
+```
+
 ### Security Configuration
 
 The bot only responds to the authorized Chat ID specified in the configuration. Make sure to:
