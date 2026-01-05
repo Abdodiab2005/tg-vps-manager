@@ -208,7 +208,7 @@ bot.onText(/\/start/, (msg) => {
 يمكنك تشغيل أي أمر بدون قيود!
     `;
 
-  bot.sendMessage(chatId, welcomeMessage, { parse_mode: "HTML" });
+  bot.sendMessage(chatId, welcomeMessage, { parse_mode: "Markdown" });
 });
 
 // أمر حالة النظام
