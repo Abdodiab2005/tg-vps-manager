@@ -1,0 +1,15 @@
+[
+  "rm -rf /",
+  "rm -rf /*",
+  ":(){:|:&};:",
+  "mkfs",
+  "dd if=/dev/zero",
+  "shutdown",
+  "poweroff",
+  "init 0",
+  "wget ",
+  "curl ",
+  "nc -e",
+  "telnet",
+  "ssh-keygen"
+]

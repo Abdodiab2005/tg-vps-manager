@@ -1,255 +1,114 @@
-# VPS Management Telegram Bot 🤖
+# 🤖 TG VPS Manager
 
-A powerful Telegram bot for managing your Linux VPS remotely. Execute commands, monitor system resources, and control your server directly from Telegram.
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Node](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen.svg)
+![GrammY](https://img.shields.io/badge/built%20with-grammY-blue)
 
-## Features ✨
-
-- **🔐 Secure Access**: Only authorized users can control the bot
-- **💻 Command Execution**: Run any Linux command without restrictions
-- **📊 System Monitoring**: Real-time system stats and resource usage
-- **🔄 System Control**: Restart, shutdown, and manage processes
-- **📱 User-Friendly**: Arabic interface with emoji indicators
-- **⚡ No Limitations**: No command blocking or timeouts
-
-## Commands 📋
-
-| Command | Description |
-|---------|-------------|
-| `/start` | Welcome message and command list |
-| `/status` | Detailed system information and resource usage |
-| `/run <command>` | Execute any Linux command |
-| `/restart` | Restart the system |
-| `/processes` | Show top CPU-consuming processes |
-| `/network` | Display network interface information |
-| `/disk` | Show disk usage statistics |
-| `/logs` | Display recent system logs |
-
-## Installation 🚀
-
-### Prerequisites
-
-- Node.js (v14 or higher)
-- npm or yarn
-- A Telegram Bot Token from [@BotFather](https://t.me/BotFather)
-- Your Telegram Chat ID
-
-### Quick Setup
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/Abdodiab2005/tg-vps-manager.git
-   cd tg-vps-manager
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Make `.env` file:**
-   ```bash
-   nano .env
-   ```
-   
-4. **Configure the bot**
-   Add these variables to `.env` file:
-   ```javascript
-    TOKEN=YOUR_BOT_TOKEN_HERE
-    AUTHORIZED_CHAT_ID=YOUR_CHAT_ID_HERE
-   ```
-
-5. **Run the bot**
-   ```bash
-   npm start
-   ```
-
-   For development with auto-restart:
-   ```bash
-   npm run dev
-   ```
-
-## Configuration ⚙️
-
-### Getting Your Bot Token
-
-1. Message [@BotFather](https://t.me/BotFather) on Telegram
-2. Send `/newbot` and follow the instructions
-3. Copy the bot token provided
-
-### Getting Your Chat ID
-
-1. Message [@userinfobot](https://t.me/userinfobot) on Telegram
-2. Copy your Chat ID from the response
-
-### Add command lists
-- Go to bot father -> type: `/mybots` -> choose your bot -> Edit Bot -> Edit Commands -> Paste this text and send to save
-```txt
-start - Welcome message and command list
-status - Detailed system information and resource usage
-run - Execute any Linux command
-restart - Restart the system
-processes - Show top CPU-consuming processes
-network - Display network interface information
-disk - Show disk usage statistics
-logs - Display recent system logs
-```
-
-### Security Configuration
-
-The bot only responds to the authorized Chat ID specified in the configuration. Make sure to:
-
-- Keep your bot token secure
-- Only share your Chat ID with trusted individuals
-- Run the bot on a secure server
-
-## System Information Display 📊
-
-The `/status` command provides comprehensive system information:
-
-- **System Details**: Hostname, OS, architecture, uptime
-- **CPU Information**: Core count, model, load averages
-- **Memory Usage**: Total, used, free memory with percentages
-- **Storage**: Disk usage, available space
-- **Network**: Available network interfaces
-
-## Usage Examples 💡
-
-### Basic Commands
-```
-/run ls -la
-/run ps aux
-/run df -h
-/run top -n 1
-```
-
-### System Administration
-```
-/run systemctl status nginx
-/run tail -f /var/log/nginx/access.log
-/run ufw status
-/run netstat -tulpn
-```
-
-### File Operations
-```
-/run find /var/log -name "*.log" -type f
-/run du -sh /home/*
-/run wget https://example.com/file.zip
-```
-
-## Running as a Service 🔄
-
-### Using systemd (Recommended)
-
-1. Create a service file:
-   ```bash
-   sudo nano /etc/systemd/system/vps-bot.service
-   ```
-
-2. Add the following content:
-   ```ini
-   [Unit]
-   Description=VPS Telegram Bot
-   After=network.target
-
-   [Service]
-   Type=simple
-   User=your-username
-   WorkingDirectory=/path/to/vps-telegram-bot
-   ExecStart=/usr/bin/node index.js
-   Restart=always
-   RestartSec=10
-
-   [Install]
-   WantedBy=multi-user.target
-   ```
-
-3. Enable and start the service:
-   ```bash
-   sudo systemctl daemon-reload
-   sudo systemctl enable vps-bot
-   sudo systemctl start vps-bot
-   ```
-
-### Using PM2
-
-```bash
-npm install -g pm2
-pm2 start index.js --name "vps-bot"
-pm2 startup
-pm2 save
-```
-
-## Security Considerations ⚠️
-
-- **Complete Control**: This bot has unrestricted access to your system
-- **No Command Filtering**: All Linux commands are allowed without restrictions
-- **No Timeouts**: Commands can run indefinitely
-- **Authorized Access Only**: Only the specified Chat ID can control the bot
-
-**⚠️ Warning**: Use this bot responsibly. It can execute destructive commands that may damage your system.
-
-## Troubleshooting 🔧
-
-### Common Issues
-
-1. **Bot not responding**
-   - Check if the bot token is correct
-   - Verify your Chat ID matches the authorized ID
-   - Ensure the bot process is running
-
-2. **Permission denied errors**
-   - Commands may require sudo privileges
-   - Use `/run sudo your-command` for elevated permissions
-
-3. **Long output truncation**
-   - Large outputs are automatically split into multiple messages
-   - For very long outputs, consider redirecting to a file
-
-### Logs and Debugging
-
-Check bot logs:
-```bash
-# If running directly
-node index.js
-
-# If using systemd
-sudo journalctl -u vps-bot -f
-
-# If using PM2
-pm2 logs vps-bot
-```
-
-## Dependencies 📦
-
-- `node-telegram-bot-api`: Telegram Bot API wrapper
-- `child_process`: For executing system commands
-- `os`: System information utilities
-
-## Contributing 🤝
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
-## License 📄
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Disclaimer ⚖️
-
-This bot provides unrestricted access to your Linux system. The authors are not responsible for any damage caused by misuse of this software. Use at your own risk.
-
-## Support 💬
-
-If you encounter any issues or have questions:
-
-1. Check the [Issues](https://github.com/Abdodiab2005/tg-vps-manager/issues) page
-2. Create a new issue if your problem isn't already reported
-3. Provide detailed information about your setup and the problem
+**TG VPS Manager** is a professional, modular, and secure Telegram bot designed to manage and monitor your Linux VPS. It supports multiple languages (Arabic/English), dynamic blocking rules, and interactive admin management.
 
 ---
 
-**Made with ❤️ for system administrators who love automation**
+## ✨ Features
+
+- **🌍 Multi-language Support**: Switch between **English** and **Arabic** easily.
+- **🖥️ Real-time Monitoring**: Instant access to CPU, RAM, Disk, and Network stats.
+- **🛠️ Secure Shell Execution**:
+  - Interactive mode (send `/run` then the command).
+  - Direct mode (send `/run ls -la`).
+  - **Block List**: Prevents dangerous commands (e.g., `rm -rf`, `mkfs`) from executing.
+- **👥 Admin Management**: Add/Remove admins via a beautiful Interactve User Interface (Inline Buttons).
+- **📜 Logging**: Comprehensive logging of executed commands for audit purposes.
+- **📂 Persistent Settings**: User preferences and admin lists are saved locally.
+
+---
+
+## 🚀 Installation & Setup
+
+### 1. Clone & Install
+
+```bash
+git clone https://github.com/Abdodiab2005/tg-vps-manager.git
+cd tg-vps-manager
+npm install
+```
+
+### 2. Configure Environment
+
+Copy `.env.example` to `.env`:
+
+```bash
+cp .env.example .env
+nano .env
+```
+
+**Variables:**
+
+- `TOKEN`: Your Bot Token from @BotFather.
+- `AUTHORIZED_CHAT_ID`: Your Telegram ID (Comma separated for multiple initial admins).
+- `ALLOW_ADD_ADMINS`: Set to `true` to enable adding admins via the bot.
+
+### 3. Run
+
+```bash
+npm start
+```
+
+_For development (auto-restart):_ `npm run dev`
+
+---
+
+## 📖 Usage
+
+### Main Commands (Bot Menu)
+
+| Command     | Description                                          |
+| :---------- | :--------------------------------------------------- |
+| `/start`    | Shows the main menu and help message.                |
+| `/status`   | Displays full system statistics (CPU/RAM/Disk/Load). |
+| `/run`      | Interactive mode to run shell commands.              |
+| `/language` | Switch bot language (AR/EN).                         |
+| `/admins`   | Admin control panel (Add/Remove admins).             |
+
+### System Commands
+
+| Command      | Description                        |
+| :----------- | :--------------------------------- |
+| `/processes` | Top 10 CPU consuming processes.    |
+| `/network`   | Network interface details.         |
+| `/disk`      | Disk usage details.                |
+| `/logs`      | View last 50 lines of system logs. |
+| `/restart`   | Reboot the VPS (Requires Sudo).    |
+
+---
+
+## 🛡️ Security Features
+
+1.  **Block List**:
+    - Commands are checked against `data/blocked_commands.json`.
+    - Dangerous commands like `shutdown`, `rm -rf /` are blocked by default.
+2.  **Auth Middleware**:
+    - Only authorized IDs can interact with the bot.
+3.  **Command Cancellation**:
+    - If you are in an interactive flow (like `/run`) and send another command (e.g. `/start`), the previous flow cancels automatically.
+
+---
+
+## 🏗️ Project Structure
+
+```
+src/
+├── commands/       # Logic for each command
+├── config/         # Config loader
+├── middlewares/    # Auth, Logging, i18n
+├── utils/          # System stats, formatting, security, settings
+├── bot.js          # Bot entry (middlewares & routing)
+└── index.js        # Main entry point
+locales/            # JSON translation files (en.json, ar.json)
+data/               # Persistent data (admins.json, etc.)
+```
+
+---
+
+## 📜 License
+
+MIT License. Created by [Eng. Abdelrhman Diab](https://github.com/Abdodiab2005).
