@@ -3,9 +3,12 @@ const path = require("path");
 
 const LOG_FILE = path.join(__dirname, "../../logs/activity.log");
 
-// Ensure logs directory exists
 if (!fs.existsSync(path.dirname(LOG_FILE))) {
   fs.mkdirSync(path.dirname(LOG_FILE), { recursive: true });
+}
+
+function normalizeCommand(command) {
+  return String(command || "unknown").trim().split(/\s+/, 1)[0];
 }
 
 function logCommand(user, command) {
@@ -13,14 +16,14 @@ function logCommand(user, command) {
   const userInfo = user.username
     ? `@${user.username} (${user.id})`
     : `ID: ${user.id}`;
-  const logEntry = `[${timestamp}] User: ${userInfo} | Command: ${command}\n`;
+  const commandName = normalizeCommand(command);
+  const logEntry = `[${timestamp}] User: ${userInfo} | Command: ${commandName}\n`;
 
-  fs.appendFile(LOG_FILE, logEntry, (err) => {
-    if (err) console.error("Failed to write to log file:", err);
+  fs.appendFile(LOG_FILE, logEntry, (error) => {
+    if (error) console.error("Failed to write to log file:", error);
   });
 
-  // Also log to console for realtime feedback
-  console.log(`[LOG] ${userInfo} executed: ${command}`);
+  console.log(`[LOG] ${userInfo} executed: ${commandName}`);
 }
 
-module.exports = { logCommand };
+module.exports = { logCommand, normalizeCommand };

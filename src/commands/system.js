@@ -1,5 +1,4 @@
 const { exec } = require("child_process");
-const { escapeHTML } = require("../utils/formatting");
 const { sendLargeMessage } = require("../utils/messaging");
 
 async function restart(ctx) {
@@ -14,62 +13,49 @@ async function restart(ctx) {
 }
 
 async function processes(ctx) {
-  const command = "ps aux --sort=-%cpu | head -10";
-  exec(command, (error, stdout) => {
+  exec("ps aux --sort=-%cpu | head -10", (error, stdout) => {
     if (error) return ctx.reply(`❌ Error: ${error.message}`);
-    const title = ctx.t("processes_title");
-    sendLargeMessage(ctx, escapeHTML(stdout), title);
+    sendLargeMessage(ctx, stdout, ctx.t("processes_title"));
   });
 }
 
 function network(ctx) {
   exec("ifconfig", (error, stdout) => {
     if (error) {
-      exec("ip addr show", (error2, stdout2) => {
-        if (error2) {
-          ctx.reply(`❌ Error: ${error2.message}`);
+      exec("ip addr show", (fallbackError, fallbackOutput) => {
+        if (fallbackError) {
+          ctx.reply(`❌ Error: ${fallbackError.message}`);
         } else {
-          const title = ctx.t("network_title");
-          sendLargeMessage(ctx, escapeHTML(stdout2), title);
+          sendLargeMessage(ctx, fallbackOutput, ctx.t("network_title"));
         }
       });
     } else {
-      const title = ctx.t("network_title");
-      sendLargeMessage(ctx, escapeHTML(stdout), title);
+      sendLargeMessage(ctx, stdout, ctx.t("network_title"));
     }
   });
 }
 
 function disk(ctx) {
-  exec("df -h", (err, stdout) => {
-    if (err) return ctx.reply(`❌ Error: ${err.message}`);
-    const title = ctx.t("disk_title");
-    sendLargeMessage(ctx, escapeHTML(stdout), title);
+  exec("df -h", (error, stdout) => {
+    if (error) return ctx.reply(`❌ Error: ${error.message}`);
+    sendLargeMessage(ctx, stdout, ctx.t("disk_title"));
   });
 }
 
 function logs(ctx) {
   exec("tail -50 /var/log/syslog", (error, stdout) => {
     if (error) {
-      exec("journalctl -n 50", (error2, stdout2) => {
-        if (error2) {
-          ctx.reply(`${ctx.t("logs_error")} ${error2.message}`);
+      exec("journalctl -n 50", (fallbackError, fallbackOutput) => {
+        if (fallbackError) {
+          ctx.reply(`${ctx.t("logs_error")} ${fallbackError.message}`);
         } else {
-          const title = ctx.t("logs_title");
-          sendLargeMessage(ctx, escapeHTML(stdout2), title);
+          sendLargeMessage(ctx, fallbackOutput, ctx.t("logs_title"));
         }
       });
     } else {
-      const title = ctx.t("logs_title");
-      sendLargeMessage(ctx, escapeHTML(stdout), title);
+      sendLargeMessage(ctx, stdout, ctx.t("logs_title"));
     }
   });
 }
 
-module.exports = {
-  restart,
-  processes,
-  network,
-  disk,
-  logs,
-};
+module.exports = { restart, processes, network, disk, logs };

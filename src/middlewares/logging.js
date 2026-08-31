@@ -1,14 +1,22 @@
 const { logCommand } = require("../utils/logger");
 
+function getCommandName(text) {
+  if (typeof text !== "string") return null;
+
+  const firstToken = text.trim().split(/\s+/, 1)[0];
+  if (!firstToken.startsWith("/")) return null;
+
+  // Normalize commands addressed to a bot, such as /status@my_bot.
+  return firstToken.split("@", 1)[0];
+}
+
 async function loggingMiddleware(ctx, next) {
-  // Only log messages that contain commands or text
-  if (ctx.message && ctx.message.text) {
-    // Check if it's a command
-    if (ctx.message.text.startsWith("/")) {
-      logCommand(ctx.from, ctx.message.text);
-    }
+  const command = getCommandName(ctx.message?.text);
+  if (command && ctx.from) {
+    logCommand(ctx.from, command);
   }
+
   return next();
 }
 
-module.exports = { loggingMiddleware };
+module.exports = { loggingMiddleware, getCommandName };

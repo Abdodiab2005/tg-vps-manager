@@ -1,11 +1,18 @@
-require("dotenv").config(); // Load environment variables first
+require("dotenv").config();
+
+const { ENV_ADMINS } = require("./utils/adminManager");
+
+if (ENV_ADMINS.length === 0) {
+  throw new Error(
+    "AUTHORIZED_CHAT_ID must contain at least one numeric Telegram user ID"
+  );
+}
+
 const bot = require("./bot");
-const { AUTHORIZED_CHAT_ID } = require("./config/config");
 
-console.log("🤖 تم تشغيل بوت إدارة VPS بنجاح (Grammy)!");
-console.log(`📱 Chat ID المسموح: ${AUTHORIZED_CHAT_ID}`);
+console.log("🤖 TG VPS Manager is running.");
+console.log(`🔐 Authorized administrators: ${ENV_ADMINS.length}`);
 
-// Handle graceful shutdown
 process.once("SIGINT", () => bot.stop());
 process.once("SIGTERM", () => bot.stop());
 
