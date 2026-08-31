@@ -1,11 +1,13 @@
 {
   "name": "tg-vps-manager",
   "version": "1.1.0",
-  "description": "Telegram bot for VPS management with system monitoring, command execution, and dynamic admin management.",
+  "description": "Private Telegram control plane for monitoring and administering a Linux VPS.",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "check": "node scripts/check.js",
+    "test": "node --test"
   },
   "keywords": [
     "telegram",
@@ -13,11 +15,11 @@
     "vps",
     "linux",
     "monitoring",
-    "system",
-    "admin",
-    "manager"
+    "system-administration",
+    "grammy",
+    "self-hosted"
   ],
-  "author": "Eng. Abdelrhman Diab",
+  "author": "Abdelrhman Diab",
   "license": "MIT",
   "dependencies": {
     "@grammyjs/conversations": "^2.1.1",
@@ -28,10 +30,14 @@
     "nodemon": "^3.0.1"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=22.0.0"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/Abdodiab2005/tg-vps-manager.git"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/Abdodiab2005/tg-vps-manager/issues"
+  },
+  "homepage": "https://github.com/Abdodiab2005/tg-vps-manager#readme"
 }

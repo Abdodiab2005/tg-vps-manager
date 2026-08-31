@@ -1,64 +1,65 @@
 const fs = require("fs");
 const path = require("path");
-// dotenv is already loaded by config/config.js which is required by bot.js -> adminManager somewhat indirectly or at root level.
-// Actually, adminManager uses process.env which is populated by previous calls.
-// Best practice: load dotenv ONCE in the entry point (index.js).
 
 const ADMINS_FILE = path.join(__dirname, "../../data/admins.json");
 const ENV_ADMINS = (process.env.AUTHORIZED_CHAT_ID || "")
   .split(",")
   .map((id) => id.trim())
-  .filter((id) => id.length > 0);
+  .filter((id) => /^\d+$/.test(id));
 
-// Ensure data directory exists
 if (!fs.existsSync(path.dirname(ADMINS_FILE))) {
   fs.mkdirSync(path.dirname(ADMINS_FILE), { recursive: true });
 }
 
-// Ensure admins file exists
 if (!fs.existsSync(ADMINS_FILE)) {
-  fs.writeFileSync(ADMINS_FILE, JSON.stringify([], null, 2));
+  fs.writeFileSync(ADMINS_FILE, JSON.stringify([], null, 2), { mode: 0o600 });
 }
 
 function getStoredAdmins() {
   try {
     const data = fs.readFileSync(ADMINS_FILE, "utf8");
-    return JSON.parse(data);
+    const admins = JSON.parse(data);
+    return Array.isArray(admins) ? admins.map(String) : [];
   } catch (error) {
     console.error("Error reading admins file:", error);
     return [];
   }
 }
 
+function writeStoredAdmins(admins) {
+  fs.writeFileSync(ADMINS_FILE, JSON.stringify(admins, null, 2), {
+    mode: 0o600,
+  });
+}
+
 function getAllAdmins() {
-  const stored = getStoredAdmins();
-  // Combine env admins and stored admins, remove duplicates
-  return [...new Set([...ENV_ADMINS, ...stored])];
+  return [...new Set([...ENV_ADMINS, ...getStoredAdmins()])];
 }
 
-function isAdmin(chatId) {
-  if (!chatId) return false;
-  const admins = getAllAdmins();
-  return admins.includes(chatId.toString());
+function isAdmin(userId) {
+  if (!userId) return false;
+  return getAllAdmins().includes(userId.toString());
 }
 
-function addAdmin(chatId) {
+function addAdmin(userId) {
   const stored = getStoredAdmins();
-  if (stored.includes(chatId.toString())) return false;
+  const normalizedId = userId.toString();
+  if (stored.includes(normalizedId) || ENV_ADMINS.includes(normalizedId)) {
+    return false;
+  }
 
-  stored.push(chatId.toString());
-  fs.writeFileSync(ADMINS_FILE, JSON.stringify(stored, null, 2));
+  stored.push(normalizedId);
+  writeStoredAdmins(stored);
   return true;
 }
 
-function removeAdmin(chatId) {
+function removeAdmin(userId) {
   const stored = getStoredAdmins();
-  const index = stored.indexOf(chatId.toString());
-
+  const index = stored.indexOf(userId.toString());
   if (index === -1) return false;
 
   stored.splice(index, 1);
-  fs.writeFileSync(ADMINS_FILE, JSON.stringify(stored, null, 2));
+  writeStoredAdmins(stored);
   return true;
 }
 
@@ -67,5 +68,5 @@ module.exports = {
   isAdmin,
   addAdmin,
   removeAdmin,
-  ENV_ADMINS, // Exporting for reference if needed
+  ENV_ADMINS,
 };

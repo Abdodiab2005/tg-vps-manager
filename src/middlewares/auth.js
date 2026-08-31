@@ -1,15 +1,17 @@
 const { isAdmin } = require("../utils/adminManager");
 
 async function authMiddleware(ctx, next) {
-  const chatId = ctx.chat?.id;
+  const isPrivateChat = ctx.chat?.type === "private";
+  const userId = ctx.from?.id;
 
-  if (isAdmin(chatId)) {
+  if (isPrivateChat && isAdmin(userId)) {
     return next();
   }
 
-  // If not authorized
-  // We can add a small cooldown or simply reply
-  await ctx.reply(ctx.t("unauthorized"));
+  // Do not advertise a privileged administration bot inside group chats.
+  if (isPrivateChat && ctx.reply) {
+    await ctx.reply(ctx.t("unauthorized"));
+  }
 }
 
 module.exports = { authMiddleware };

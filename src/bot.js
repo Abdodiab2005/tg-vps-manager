@@ -1,4 +1,4 @@
-const { Bot, session, InlineKeyboard } = require("grammy");
+const { Bot, session } = require("grammy");
 const {
   conversations,
   createConversation,
@@ -8,7 +8,6 @@ const { authMiddleware } = require("./middlewares/auth");
 const { loggingMiddleware } = require("./middlewares/logging");
 const { i18nMiddleware } = require("./middlewares/i18n");
 
-// Import commands
 const startCommand = require("./commands/start");
 const statusCommand = require("./commands/status");
 const { runCommand, runConversation } = require("./commands/run");
@@ -29,21 +28,15 @@ if (!TOKEN) {
 
 const bot = new Bot(TOKEN);
 
-// Middleware
 bot.use(session({ initial: () => ({}) }));
-bot.use(i18nMiddleware); // Add i18n logic early so context is enriched
+bot.use(i18nMiddleware);
 bot.use(conversations());
-
-bot.use(loggingMiddleware);
 bot.use(authMiddleware);
+bot.use(loggingMiddleware);
 
-// Register Conversations
-
-// Register Conversations
 bot.use(createConversation(runConversation));
 bot.use(createConversation(addAdminConversation));
 
-// Set Default Commands (for menu button)
 bot.api
   .setMyCommands([
     { command: "start", description: "Main Menu" },
@@ -54,31 +47,26 @@ bot.api
     { command: "network", description: "Network Info" },
     { command: "disk", description: "Disk Usage" },
     { command: "logs", description: "System Logs" },
+    { command: "restart", description: "Restart Server" },
     { command: "admins", description: "Manage Admins" },
   ])
-  .catch((e) => console.error("Failed to set commands:", e));
+  .catch((error) => console.error("Failed to set commands:", error));
 
-// Commands
 bot.command("start", startCommand);
 bot.command("status", statusCommand);
 bot.command("run", runCommand);
 bot.command("language", languageCommand);
-
 bot.command("restart", systemCommands.restart);
 bot.command("processes", systemCommands.processes);
 bot.command("network", systemCommands.network);
 bot.command("disk", systemCommands.disk);
 bot.command("logs", systemCommands.logs);
-
-// Admin Management
 bot.command("admins", adminPanelCommand);
 bot.command("addadmin", async (ctx) =>
   ctx.conversation.enter("addAdminConversation")
 );
 
-// Callbacks
 bot.on("callback_query:data", async (ctx, next) => {
-  // We have different handlers for different callbacks
   const data = ctx.callbackQuery.data;
   if (data.startsWith("set_lang_")) {
     return handleLanguageCallback(ctx);
@@ -90,26 +78,19 @@ bot.on("callback_query:data", async (ctx, next) => {
   ) {
     return handleAdminActions(ctx);
   }
-  await next();
+  return next();
 });
 
-// Error handling
 bot.catch((err) => {
   const ctx = err.ctx;
   console.error(`Error while handling update ${ctx.update.update_id}:`);
-  const e = err.error;
-  if (e instanceof Error) {
-    console.error(e.message);
-  } else {
-    console.error(e);
+  const error = err.error;
+  console.error(error instanceof Error ? error.message : error);
+
+  if (ctx.chat) {
+    const text = ctx.t ? ctx.t("exec_error") : "❌ Error";
+    ctx.reply(text).catch(() => {});
   }
-  try {
-    if (ctx.chat) {
-      // Use fallback text if t() not available for some reason, or user t()
-      const text = ctx.t ? ctx.t("exec_error") : "❌ Error";
-      ctx.reply(text).catch(() => {});
-    }
-  } catch (_) {}
 });
 
 module.exports = bot;

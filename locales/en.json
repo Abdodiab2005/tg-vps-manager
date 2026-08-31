@@ -1,5 +1,5 @@
 {
-  "welcome": "🔧 <b>Welcome to VPS Manager Bot</b>\n\n<b>Available Commands:</b>\n📊 /status - System Statistics\n💻 /run - Execute Shell Commands\n🔄 /restart - Reboot System\n📋 /processes - Top Processes\n🌐 /network - Network Info\n💾 /disk - Disk Usage\n🔍 /logs - System Logs\n👥 /admins - Manage Admins\n🌐 /language - Change Language\n\n<i>You can run any command securely!</i>",
+  "welcome": "🔧 <b>Welcome to TG VPS Manager</b>\n\n<b>Available Commands:</b>\n📊 /status - System Statistics\n💻 /run - Execute Shell Commands\n🔄 /restart - Reboot System\n📋 /processes - Top Processes\n🌐 /network - Network Info\n💾 /disk - Disk Usage\n🔍 /logs - System Logs\n👥 /admins - Manage Admins\n🌐 /language - Change Language\n\n<i>Administrative access is limited to configured users in private chats.</i>",
   "unauthorized": "❌ You are not authorized to use this bot.",
   "status_title": "🖥️ <b>System Information</b>",
   "status_system": "<b>System:</b>",
@@ -22,7 +22,7 @@
   "exec_error": "❌ Execution Error:",
   "exec_success": "✅ Command executed successfully (No Output)",
   "exec_cancel": "❌ Previous command cancelled because you sent a new command.",
-  "exec_blocked": "🚫 <b>Command Blocked for Security!</b>\nReason: Contains",
+  "exec_blocked": "🚫 <b>Command blocked by the configured guardrail.</b>\nMatched:",
   "enter_command": "⌨️ <b>Please enter the command you want to execute:</b>",
   "invalid_text": "❌ Invalid text received. Command cancelled.",
   "restarting": "🔄 Restarting system...",
